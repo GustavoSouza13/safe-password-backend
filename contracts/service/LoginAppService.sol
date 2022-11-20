@@ -18,7 +18,7 @@ contract LoginAppService is DependentContracts, LoginApp {
     );
 
     function register(User calldata user) public {
-        if (equals(loginAppStorage.findUser(user.name), emptyUser)) {
+        if (equals(loginAppStorage.findUser(user.wallet), emptyUser)) {
             loginAppStorage.register(user);
             emit UserRegister('registrou');
         } else {
@@ -30,19 +30,19 @@ contract LoginAppService is DependentContracts, LoginApp {
         return emptyUser;
     }
 
-    function getUser(string memory username) public view returns (User memory) {
-        return loginAppStorage.findUser(username);
+    function getUser(address wallet) public view returns (User memory) {
+        return loginAppStorage.findUser(wallet);
     }
 
 
-    function login(string memory username, bytes32 password) public view returns (string memory) {
-        User memory user = loginAppStorage.findUser(username);
-        require(password == user.password, "Password not equal");
-        return "passou";
-    }
+    // function login(string memory username, bytes32 password) public view returns (string memory) {
+    //     User memory user = loginAppStorage.findUser(username);
+    //     require(password == user.password, "Password not equal");
+    //     return "passou";
+    // }
 
-    function getPassword(string memory username) public view returns (bytes32) {
-        try loginAppStorage.findUser(username) returns (User memory user) {
+    function getPassword(address wallet) public view returns (bytes32) {
+        try loginAppStorage.findUser(wallet) returns (User memory user) {
              return user.password;
         } catch {
             return "deu erro";

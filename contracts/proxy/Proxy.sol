@@ -18,12 +18,12 @@ contract Proxy is DependentContracts, LoginApp {
         return loginAppService.getEmptyUser();
     }
 
-    function getUser(string memory username) public view returns (User memory) {
-        return loginAppService.getUser(username);
+    function getUser(address wallet) public view returns (User memory) {
+        return loginAppService.getUser(wallet);
     }
 
-    function getPassword(string memory username) public view returns (bytes32) {
-        return loginAppService.getPassword(username);
+    function getPassword(address wallet) public view returns (bytes32) {
+        return loginAppService.getPassword(wallet);
     }
 
     function loadDependencies() public override {

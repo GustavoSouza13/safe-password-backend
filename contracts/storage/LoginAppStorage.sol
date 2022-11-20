@@ -7,11 +7,11 @@ contract LoginAppStorage is LoginApp {
     
     mapping(bytes32 => User) private users;
 
-    function findPassword(string memory username) public view returns (bytes32) {
-        return users[sha256(abi.encodePacked(username))].password;
+    function register(User calldata user) public {
+        users[sha256(abi.encodePacked(user.name))] = user;
     }
 
-    function register(User calldata user) public view returns (User memory) {
-        return users[sha256(abi.encodePacked(user.name))];
+    function findUser(string memory username) public view returns (User memory) {
+        return users[sha256(abi.encodePacked(username))];
     }
 }

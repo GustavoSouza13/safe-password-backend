@@ -9,19 +9,41 @@ contract LoginAppService is DependentContracts, LoginApp {
 
     LoginAppStorage internal loginAppStorage;
 
-    function register(User calldata user) public view returns (User memory) {
-        return loginAppStorage.register(user);
+    event UserRegister (
+        string teste
+    );
+
+    event UserAlredyRegister (
+        string teste
+    );
+
+    function register(User calldata user) public {
+        if (equals(loginAppStorage.findUser(user.name), emptyUser)) {
+            loginAppStorage.register(user);
+            emit UserRegister('registrou');
+        } else {
+            emit UserAlredyRegister('registrado ja estava');
+        }
     }
 
+    function getEmptyUser() public view returns (User memory) {
+        return emptyUser;
+    }
+
+    function getUser(string memory username) public view returns (User memory) {
+        return loginAppStorage.findUser(username);
+    }
+
+
     function login(string memory username, bytes32 password) public view returns (string memory) {
-        bytes32 storagePass = loginAppStorage.findPassword(username);
-        require(password == storagePass, "Password not equal");
+        User memory user = loginAppStorage.findUser(username);
+        require(password == user.password, "Password not equal");
         return "passou";
     }
 
     function getPassword(string memory username) public view returns (bytes32) {
-        try loginAppStorage.findPassword(username) returns (bytes32 pass) {
-             return pass;
+        try loginAppStorage.findUser(username) returns (User memory user) {
+             return user.password;
         } catch {
             return "deu erro";
         }

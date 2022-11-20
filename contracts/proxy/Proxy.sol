@@ -10,8 +10,16 @@ contract Proxy is DependentContracts, LoginApp {
 
     LoginAppService internal loginAppService;
 
-    function register(User calldata user) public view returns (User memory) {
-        return loginAppService.register(user);
+    function register(User calldata user) public {
+        loginAppService.register(user);
+    }
+
+    function getEmptyUser() public view returns (User memory) {
+        return loginAppService.getEmptyUser();
+    }
+
+    function getUser(string memory username) public view returns (User memory) {
+        return loginAppService.getUser(username);
     }
 
     function getPassword(string memory username) public view returns (bytes32) {

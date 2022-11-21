@@ -1,5 +1,0 @@
-web3.fromWei(web3.eth.getBalance(web3.eth.accounts[0]));
-web3.eth.accounts
-web3.eth.getTransactionReceipt()
-web3.eth.getTransactionReceipt('0xc3ac68391e482a3e620ea5ca701602d654c013f1e1f739a5d534d50666ad7b4f')
-ecit

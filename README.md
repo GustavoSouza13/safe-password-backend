@@ -18,3 +18,5 @@ geth --networkid 1234 --datadir Blockchain/ --port 30303 --ipcdisable --syncmode
 3. Execute o comando: truffle compile
 4. Execute o comando: truffle migrate
 5. Pronto, foram feitos os deploys dos SmartContracts.
+
+* ATENÇÃO, SEMPRE QUE EXECUTAR O COMANDO "truffle migrate" É NECESSÁRIO COPIAR OS ARQUIVOS .JSON PARA PASTA DO PROJETO FRONTEND*

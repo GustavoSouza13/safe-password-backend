@@ -14,16 +14,16 @@ contract Proxy is DependentContracts, LoginApp {
         loginAppService.register(user);
     }
 
-    function getEmptyUser() public view returns (User memory) {
+    function login(address wallet, bytes32 password) public {
+        loginAppService.login(wallet, password);
+    }
+
+    function getEmptyUser() public returns (User memory) {
         return loginAppService.getEmptyUser();
     }
 
-    function getUser(address wallet) public view returns (User memory) {
+    function getUser(address wallet) public returns (User memory) {
         return loginAppService.getUser(wallet);
-    }
-
-    function getPassword(address wallet) public view returns (bytes32) {
-        return loginAppService.getPassword(wallet);
     }
 
     function loadDependencies() public override {

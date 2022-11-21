@@ -9,45 +9,62 @@ contract LoginAppService is DependentContracts, LoginApp {
 
     LoginAppStorage internal loginAppStorage;
 
-    event UserRegister (
-        string teste
-    );
+    event UserRegister ();
+    event UserAlredyRegister ();
+    event UserNotFound ();
 
-    event UserAlredyRegister (
-        string teste
+    event AccessGranted(
+        User user
     );
+    event AccessDenied(
+        string reason
+    );
+    
 
     function register(User calldata user) public {
         if (equals(loginAppStorage.findUser(user.wallet), emptyUser)) {
             loginAppStorage.register(user);
-            emit UserRegister('registrou');
+            emit UserRegister();
         } else {
-            emit UserAlredyRegister('registrado ja estava');
+            emit UserAlredyRegister();
         }
     }
 
-    function getEmptyUser() public view returns (User memory) {
+    function login(address wallet, bytes32 password) public {
+        User memory user = loginAppStorage.findUser(wallet);
+        if (equals(user, emptyUser)) {
+            emit UserNotFound();
+        } else {
+            if (password != user.password) {
+                emit AccessDenied('invalid_password');
+            } else {
+                emit AccessGranted(user);
+            }
+            // require(password == user.password, "Password not equal");
+            // emit AccessGranted();
+        }
+    }
+
+    function getEmptyUser() public returns (User memory) {
         return emptyUser;
     }
 
-    function getUser(address wallet) public view returns (User memory) {
-        return loginAppStorage.findUser(wallet);
-    }
-
-
-    // function login(string memory username, bytes32 password) public view returns (string memory) {
-    //     User memory user = loginAppStorage.findUser(username);
-    //     require(password == user.password, "Password not equal");
-    //     return "passou";
-    // }
-
-    function getPassword(address wallet) public view returns (bytes32) {
-        try loginAppStorage.findUser(wallet) returns (User memory user) {
-             return user.password;
-        } catch {
-            return "deu erro";
+    function getUser(address wallet) public returns (User memory) {
+        User memory user = loginAppStorage.findUser(wallet);
+        if (equals(user, emptyUser)) {
+            emit UserNotFound();
+        } else {
+            return user;
         }
     }
+
+    // function getPassword(address wallet) public view returns (bytes32) {
+    //     try loginAppStorage.findUser(wallet) returns (User memory user) {
+    //          return user.password;
+    //     } catch {
+    //         return "deu erro";
+    //     }
+    // }
 
     function loadDependencies() public override {
         loginAppStorage = LoginAppStorage(address(dependencies['LoginAppStorage']));

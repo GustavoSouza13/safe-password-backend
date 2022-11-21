@@ -3,6 +3,10 @@ pragma solidity ^0.8.17;
 
 contract LoginApp {
 
+    struct Address {
+        address _address;
+    }
+
     struct User {
         string name;
         address wallet;

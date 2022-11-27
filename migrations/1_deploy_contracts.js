@@ -9,7 +9,7 @@ module.exports = function(deployer) {
     deployer.deploy(LoginApp);
     deployer.deploy(DependentContracts);
     
-    deployer.deploy(Proxy);    
+    deployer.deploy(Proxy);
     deployer.deploy(LoginAppService);
     deployer.deploy(LoginAppStorage);
 }

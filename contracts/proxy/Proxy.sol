@@ -14,6 +14,10 @@ contract Proxy is DependentContracts, LoginApp {
         loginAppService.register(user);
     }
 
+    function updateUser(User calldata user) public {
+        loginAppService.updateUser(user);
+    }
+
     function login(address wallet, bytes32 password) public {
         loginAppService.login(wallet, password);
     }

@@ -9,25 +9,25 @@ contract LoginAppService is DependentContracts, LoginApp {
 
     LoginAppStorage internal loginAppStorage;
 
-    event UserRegister ();
-    event UserAlredyRegister ();
-    event UserNotFound ();
+    event UserRegister(User user);
+    event UserAlredyRegister();
+    event UserNotFound();
 
-    event AccessGranted(
-        User user
-    );
-    event AccessDenied(
-        string reason
-    );
+    event AccessGranted(User user);
+    event AccessDenied(string reason);
     
 
     function register(User calldata user) public {
         if (equals(loginAppStorage.findUser(user.wallet), emptyUser)) {
             loginAppStorage.register(user);
-            emit UserRegister();
+            emit UserRegister(user);
         } else {
             emit UserAlredyRegister();
         }
+    }
+
+    function updateUser(User calldata user) public {
+        loginAppStorage.updateUser(user);
     }
 
     function login(address wallet, bytes32 password) public {

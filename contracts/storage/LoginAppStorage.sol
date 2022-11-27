@@ -11,6 +11,10 @@ contract LoginAppStorage is LoginApp {
         users[sha256(abi.encodePacked(user.wallet))] = user;
     }
 
+    function updateUser(User calldata user) public {
+        users[sha256(abi.encodePacked(user.wallet))] = user;
+    }
+
     function findUser(address wallet) public view returns (User memory) {
         return users[sha256(abi.encodePacked(wallet))];
     }

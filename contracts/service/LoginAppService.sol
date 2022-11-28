@@ -45,7 +45,7 @@ contract LoginAppService is DependentContracts, LoginApp {
         }
     }
 
-    function getEmptyUser() public returns (User memory) {
+    function getEmptyUser() public view returns (User memory) {
         return emptyUser;
     }
 

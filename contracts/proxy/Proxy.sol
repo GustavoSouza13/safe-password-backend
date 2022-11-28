@@ -4,13 +4,17 @@ pragma solidity ^0.8.17;
 import '../DependentContracts.sol';
 
 import '../LoginApp.sol';
-import '../service/LoginAppService.sol';
+import '../DomainAbstract.sol';
 
-contract Proxy is DependentContracts, LoginApp {
+import '../service/LoginAppService.sol';
+import '../service/DomainService.sol';
+
+contract Proxy is DependentContracts, LoginApp, DomainAbstract {
 
     LoginAppService internal loginAppService;
+    DomainService internal domainService;
 
-    function register(User calldata user) public {
+    function registerUser(User calldata user) public {
         loginAppService.register(user);
     }
 
@@ -18,11 +22,7 @@ contract Proxy is DependentContracts, LoginApp {
         loginAppService.updateUser(user);
     }
 
-    function login(address wallet, bytes32 password) public {
-        loginAppService.login(wallet, password);
-    }
-
-    function getEmptyUser() public returns (User memory) {
+    function getEmptyUser() public view returns (User memory) {
         return loginAppService.getEmptyUser();
     }
 
@@ -30,7 +30,20 @@ contract Proxy is DependentContracts, LoginApp {
         return loginAppService.getUser(wallet);
     }
 
+    function login(address wallet, bytes32 password) public {
+        loginAppService.login(wallet, password);
+    }
+
+    function registerDomain(Domain memory domain) public {
+        domainService.register(domain);
+    }
+
+    function getDomainsOnly() public view returns (Domain[] memory) {
+        return domainService.getDomainsOnly();
+    }
+
     function loadDependencies() public override {
         loginAppService = LoginAppService(address(dependencies['LoginAppService']));
+        domainService = DomainService(address(dependencies['DomainService']));
     }
 }

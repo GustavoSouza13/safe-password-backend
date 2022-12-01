@@ -11,17 +11,26 @@ contract DomainService is DependentContracts, DomainAbstract {
     DomainStorage private domainStorage;
 
     event DomainRegister();
+    
 
     function register(Domain memory domain) external {
         domainStorage.register(domain);
         emit DomainRegister();
     }
 
-    function getDomainsOnly() external view returns (Domain[] memory) {
-        return domainStorage.getDomainsOnly();
+    function getDomainsOnly(address wallet) external view returns (Domain[] memory) {
+        return domainStorage.getDomainsOnly(wallet);
+    }
+
+    function getPasswordByDomain(string memory localDomain, address wallet) external view returns (bytes32) {
+        return domainStorage.getPasswordByDomain(localDomain, wallet);
+    }
+
+    function getTeste(address wallet) public returns (uint256) {
+        return 0;
     }
 
     function loadDependencies() public override {
-        domainStorage = DomainStorage(address(dependencies['DomainStorage']));
+        domainStorage = DomainStorage(address(this.getDependencieAddress('DomainStorage')));
     }
 }

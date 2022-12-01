@@ -67,6 +67,6 @@ contract LoginAppService is DependentContracts, LoginApp {
     // }
 
     function loadDependencies() public override {
-        loginAppStorage = LoginAppStorage(address(dependencies['LoginAppStorage']));
+        loginAppStorage = LoginAppStorage(address(this.getDependencieAddress('LoginAppStorage')));
     }
 }

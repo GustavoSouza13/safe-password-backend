@@ -24,3 +24,5 @@ Proxy.at('0x6D794E4Ac17414B6F8f8a8a0E7f20d3993622cFF')
 Proxy.abi
 new Proxy()
 Proxy()
+personal.listWallets
+personal

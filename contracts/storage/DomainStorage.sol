@@ -7,19 +7,18 @@ contract DomainStorage is DomainAbstract {
 
     struct DomainsControl {
         uint256 total;
-        Domain[] domains;
+        mapping(uint256 => Domain) domains;
     }
 
     mapping(address => DomainsControl) domainsAddress;
 
     function register(Domain memory domain) external {
         DomainsControl storage domainsControl = domainsAddress[tx.origin];
-        domainsControl.total++;
-        domainsControl.domains.push(domain);
+        domainsControl.domains[domainsControl.total++] = domain;
     }
 
-    function getDomainsOnly() external view returns (Domain[] memory) {
-        DomainsControl storage domainsControl = domainsAddress[tx.origin];
+    function getDomainsOnly(address wallet) external view returns (Domain[] memory) {
+        DomainsControl storage domainsControl = domainsAddress[wallet];
         Domain[] memory domains = new Domain[](domainsControl.total);
 
         for (uint256 i = 0; i < domainsControl.total; i++) {
@@ -28,5 +27,21 @@ contract DomainStorage is DomainAbstract {
         }
 
         return domains;
+    }
+
+    function getPasswordByDomain(string memory localDomain, address wallet) external view returns (bytes32) {
+        DomainsControl storage domainsControl = domainsAddress[wallet];
+        for (uint256 i = 0; i < domainsControl.total; i++) {
+            Domain memory domain = domainsControl.domains[i];
+            if (equals(domain.domain, localDomain)) {
+                return domain.password;
+            }
+        }
+
+        return bytes32(0);
+    }
+
+    function equals(string memory string1, string memory string2) public pure returns (bool) {
+        return keccak256(abi.encodePacked(string1)) == keccak256(abi.encodePacked(string2));
     }
 }

@@ -30,10 +30,6 @@ contract Proxy is DependentContracts, LoginApp, DomainAbstract {
         return loginAppService.getUser(wallet);
     }
 
-    function getTeste(address wallet) public returns (uint256) {
-        return domainService.getTeste(wallet);
-    }
-
     function login(address wallet, bytes32 password) public {
         loginAppService.login(wallet, password);
     }
@@ -42,15 +38,19 @@ contract Proxy is DependentContracts, LoginApp, DomainAbstract {
         domainService.register(domain);
     }
 
-    function getDomainsOnly(address wallet) public view returns (Domain[] memory) {
+    function updateDomain(Domain memory domain) public {
+        domainService.update(domain);
+    }
+
+    function getDomainsOnly(address wallet) public view returns (string[] memory) {
         return domainService.getDomainsOnly(wallet);
     }
 
-    function getPasswordByDomain(string memory localDomain, address wallet) external view returns (bytes32) {
+    function getPasswordByDomain(string memory localDomain, address wallet) public view returns (string memory) {
         return domainService.getPasswordByDomain(localDomain, wallet);
     }
 
-    function loadDependencies() public override {
+    function loadDependencies() internal override {
         loginAppService = LoginAppService(address(this.getDependencieAddress('LoginAppService')));
         domainService = DomainService(address(this.getDependencieAddress('DomainService')));
     }

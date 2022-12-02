@@ -5,12 +5,12 @@ contract DomainAbstract {
 
     struct Domain {
         string domain;
-        bytes32 password;
+        string password;
     }
 
-    Domain emptyDomain = Domain('', bytes32(0));
+    Domain internal emptyDomain = Domain('', '');
 
-    function equals(Domain memory domain1, Domain memory domain2) public pure returns (bool) {
+    function equals(Domain memory domain1, Domain memory domain2) external pure returns (bool) {
         return keccak256(abi.encodePacked(domain1.domain, domain1.password)) == keccak256(abi.encodePacked(domain2.domain, domain2.password));
     }
 }

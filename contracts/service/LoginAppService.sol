@@ -17,7 +17,7 @@ contract LoginAppService is DependentContracts, LoginApp {
     event AccessDenied(string reason);
     
 
-    function register(User calldata user) public {
+    function register(User calldata user) external {
         if (equals(loginAppStorage.findUser(user.wallet), emptyUser)) {
             loginAppStorage.register(user);
             emit UserRegister(user);
@@ -26,11 +26,11 @@ contract LoginAppService is DependentContracts, LoginApp {
         }
     }
 
-    function updateUser(User calldata user) public {
+    function updateUser(User calldata user) external {
         loginAppStorage.updateUser(user);
     }
 
-    function login(address wallet, bytes32 password) public {
+    function login(address wallet, bytes32 password) external {
         User memory user = loginAppStorage.findUser(wallet);
         if (equals(user, emptyUser)) {
             emit UserNotFound();
@@ -45,11 +45,11 @@ contract LoginAppService is DependentContracts, LoginApp {
         }
     }
 
-    function getEmptyUser() public view returns (User memory) {
+    function getEmptyUser() external view returns (User memory) {
         return emptyUser;
     }
 
-    function getUser(address wallet) public returns (User memory) {
+    function getUser(address wallet) external returns (User memory) {
         User memory user = loginAppStorage.findUser(wallet);
         if (equals(user, emptyUser)) {
             emit UserNotFound();
@@ -66,7 +66,7 @@ contract LoginAppService is DependentContracts, LoginApp {
     //     }
     // }
 
-    function loadDependencies() public override {
+    function loadDependencies() internal override {
         loginAppStorage = LoginAppStorage(address(this.getDependencieAddress('LoginAppStorage')));
     }
 }

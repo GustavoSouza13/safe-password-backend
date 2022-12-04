@@ -15,13 +15,22 @@ contract DomainStorage is DomainAbstract {
 
     function register(Domain memory domain) external {
         DomainsControl storage domainsControl = domainsAddress[tx.origin];
-        domainsControl.domainsIndex[domain.domain] = domainsControl.total;
-        domainsControl.domains[domainsControl.total++] = domain;
+        if (domainsControl.domainsIndex[domain.domain] > 0) {
+            domainsControl.domains[domainsControl.domainsIndex[domain.domain]] = domain;
+        } else {
+            domainsControl.domainsIndex[domain.domain] = domainsControl.total;
+            domainsControl.domains[domainsControl.total++] = domain;
+        }
     }
 
     function update(Domain memory domain) external {
         DomainsControl storage domainsControl = domainsAddress[tx.origin];
         domainsControl.domains[domainsControl.domainsIndex[domain.domain]] = domain;
+    }
+
+    function remove(string memory domain) external {
+        DomainsControl storage domainsControl = domainsAddress[tx.origin];
+        domainsControl.domains[domainsControl.domainsIndex[domain]] = emptyDomain;
     }
 
     function getDomainsOnly(address wallet) external view returns (string[] memory) {

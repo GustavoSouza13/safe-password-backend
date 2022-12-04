@@ -12,6 +12,7 @@ contract DomainService is DependentContracts, DomainAbstract {
 
     event DomainRegister();
     event DomainUpdated();
+    event DomainDeleted();
 
     function register(Domain memory domain) external {
         domainStorage.register(domain);
@@ -21,6 +22,11 @@ contract DomainService is DependentContracts, DomainAbstract {
     function update(Domain memory domain) external {
         domainStorage.update(domain);
         emit DomainUpdated();
+    }
+
+    function remove(string memory domain) external {
+        domainStorage.remove(domain);
+        emit DomainDeleted();
     }
 
     function getDomainsOnly(address wallet) external view returns (string[] memory) {

@@ -42,6 +42,10 @@ contract Proxy is DependentContracts, LoginApp, DomainAbstract {
         domainService.update(domain);
     }
 
+    function deleteDomain(string memory domain) public {
+        domainService.remove(domain);
+    }
+
     function getDomainsOnly(address wallet) public view returns (string[] memory) {
         return domainService.getDomainsOnly(wallet);
     }

@@ -30,12 +30,12 @@ contract LoginAppService is DependentContracts, LoginApp {
         loginAppStorage.updateUser(user);
     }
 
-    function login(address wallet, bytes32 password) external {
+    function login(address wallet, string memory password) external {
         User memory user = loginAppStorage.findUser(wallet);
         if (equals(user, emptyUser)) {
             emit UserNotFound();
         } else {
-            if (password != user.password) {
+            if (!equals(password, user.password)) {
                 emit AccessDenied('invalid_password');
             } else {
                 emit AccessGranted(user);
@@ -49,10 +49,10 @@ contract LoginAppService is DependentContracts, LoginApp {
         return emptyUser;
     }
 
-    function getUser(address wallet) external returns (User memory) {
+    function getUser(address wallet) external view returns (User memory) {
         User memory user = loginAppStorage.findUser(wallet);
         if (equals(user, emptyUser)) {
-            emit UserNotFound();
+            // emit UserNotFound();
         } else {
             return user;
         }

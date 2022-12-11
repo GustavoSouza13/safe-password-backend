@@ -26,11 +26,11 @@ contract Proxy is DependentContracts, LoginApp, DomainAbstract {
         return loginAppService.getEmptyUser();
     }
 
-    function getUser(address wallet) public returns (User memory) {
+    function getUser(address wallet) public view returns (User memory) {
         return loginAppService.getUser(wallet);
     }
 
-    function login(address wallet, bytes32 password) public {
+    function login(address wallet, string memory password) public {
         loginAppService.login(wallet, password);
     }
 
